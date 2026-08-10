@@ -1,5 +1,4 @@
 import sys
-from combatant import Combatant
 from initiative import InitTracker
 
 def main():
