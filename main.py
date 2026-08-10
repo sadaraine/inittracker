@@ -1,13 +1,15 @@
 import sys
 from combatant import Combatant
+from initiative import InitTracker
 
 def main():
-    combatant_list = []
+    combat = InitTracker()
+
     while True:
-        print("Welcome to the Initiative Tracker!")
         print("Choose from the following:")
         print("A: Add Combatant")
-        print("R: Remove Combatant")
+        print("D: Display Combatants")
+        print("N: Next")
         print("X: Exit")
 
         choice = input("Enter your choice: ").strip().lower()
@@ -15,30 +17,33 @@ def main():
         match choice:
 
             case "a":
-                tmp_list = []
-                list_name = input("Enter combatant name: ")
-                while True:
-                    actions = input("Number of actions (1-5): ").strip()
-                    tmp_list.append(actions)
-                    initiative = input("Initiative Roll: ").strip()
-                    tmp_list.append(initiative)
-                    between = input("# Between Actions (20-10): ").strip()
-                    tmp_list.append(between)
-                    speed = input("Speed: ").strip()
-                    tmp_list.append(speed)
-                    break
-                print(f"Combatant added: {list_name}")
-                list_name = tmp_list
-                del tmp_list
-                print(f"Combatant: {list_name}")
-                return list_name
-            case "r":
-                print("Remove Combatant: ")
+                name = input("Enter combatant name: ").strip()
+                actions = input("Number of actions (1-5): ").strip()
+                initiative = input("Initiative Roll: ").strip()
+                between = input("# Between Actions (20-10): ").strip()
+                speed = input("Speed: ").strip()
+                combat.add(name, actions, initiative, between, speed)
+                print(combat)
+            case "d":
+                combat.display()
+                print(combat)
+            case "n":
+                first_combatant = next(iter(combat))
+                replacement = first_combatant
+                replacement["initiative"] -= replacement["between"]
+                replacement["actions"] -= 1
+                removed_combatant = combat.pop(0)
+                if replacement["actions"] == 0:
+                    combat.display()
+                    pass
+                else:
+                    combat.add(replacement["name"], replacement["actions"], replacement["initiative"], replacement["between"], replacement["speed"])
+                    combat.display()
             case "x":
                 print("Farewell Storyteller!")
                 break
             case _:
-                print("\nYou have chosen poorly. Enter your choice (A, R, or X): ")
+                print("\nYou have chosen poorly. Enter your choice (I, or X): ")
                 
 if __name__ == "__main__":
     main()
