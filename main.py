@@ -22,10 +22,8 @@ def main():
                 between = input("# Between Actions (20-10): ").strip()
                 speed = input("Speed: ").strip()
                 combat.add(name, actions, initiative, between, speed)
-                print(combat)
             case "d":
                 combat.display()
-                print(combat)
             case "n":
                 first_combatant = next(iter(combat))
                 replacement = first_combatant
